@@ -1,7 +1,7 @@
 # Lupa PDF Converter
 
 
-Software criado na empresa Lupa Tecnologia e Sistemas LTDA.
+Software criado na empresa Lupa Tecnologia e Sistemas LTDA(2018).
 
 
 # Funções:
