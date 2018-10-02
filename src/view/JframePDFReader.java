@@ -73,6 +73,7 @@ public class JframePDFReader extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSlider1 = new javax.swing.JSlider();
         jPanel1 = new javax.swing.JPanel();
         btnPDF = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -142,8 +143,8 @@ public class JframePDFReader extends javax.swing.JFrame {
             }
         });
 
-        PDFBar.setBackground(new java.awt.Color(0, 153, 255));
-        PDFBar.setForeground(new java.awt.Color(0, 153, 255));
+        PDFBar.setBackground(new java.awt.Color(153, 153, 153));
+        PDFBar.setForeground(new java.awt.Color(153, 153, 153));
         PDFBar.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         PDFBar.setFocusCycleRoot(true);
         PDFBar.setStringPainted(true);
@@ -188,7 +189,6 @@ public class JframePDFReader extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(PDFBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +221,10 @@ public class JframePDFReader extends javax.swing.JFrame {
                         .addComponent(jLabelLimpar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabelVersão)
-                        .addGap(133, 133, 133))))
+                        .addGap(133, 133, 133))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -682,6 +685,7 @@ public class JframePDFReader extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelVersão;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSlider jSlider1;
     private javax.swing.JTable tablePDF;
     // End of variables declaration//GEN-END:variables
 }
