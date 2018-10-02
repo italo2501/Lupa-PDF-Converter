@@ -37,6 +37,7 @@ public class JframePDFReader extends javax.swing.JFrame {
     PDFTableModel pdfTable = new PDFTableModel();
 
     String verify;
+    int verifyQtd = 0;
     int qtdPDFconvertidos = 0;
     String Serial = null;
     String S;
@@ -281,6 +282,8 @@ public class JframePDFReader extends javax.swing.JFrame {
 
     private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
 
+
+        
         JFileChooser arqPDF = new JFileChooser();// criaS janela de busca
         arqPDF.setDialogTitle("Selecionar PDF"); // Titulo da janela de busca
         arqPDF.setMultiSelectionEnabled(true);
@@ -289,6 +292,7 @@ public class JframePDFReader extends javax.swing.JFrame {
         arqPDF.setFileFilter(filter);
         int retorno = arqPDF.showOpenDialog(this);
 
+        
         if (retorno == 1) {
             JOptionPane.showMessageDialog(null, "Por favor, escolha um ou mais arquivos PDF");
 
@@ -298,7 +302,7 @@ public class JframePDFReader extends javax.swing.JFrame {
 
             files = arqPDF.getSelectedFiles();
             for (int i = 0; i < files.length; i++) {
-                 
+                 verifyQtd ++;
                int t = files.length;
                int p = 100* (i+1)/t;
                 PDFBar.setValue(p);
@@ -413,7 +417,7 @@ public class JframePDFReader extends javax.swing.JFrame {
                 jLQtdPDFlidos.setText(String.valueOf(files.length));
             }
 
-            JOptionPane.showMessageDialog(null, "Seleção efetuada com sucesso!");
+          
 
         }
 
@@ -422,219 +426,229 @@ public class JframePDFReader extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
 
-        JFileChooser saveFile = new JFileChooser();
-
-        saveFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        int retorno = saveFile.showSaveDialog(jPanel1);
-
-        if (retorno == 1) {
-            JOptionPane.showMessageDialog(null, "Por favor escolha um destino válido!");
-
-        }
-
-        if (retorno == JFileChooser.APPROVE_OPTION) {
-
-            File diretorio = saveFile.getSelectedFile();
-
-            System.out.println(diretorio);
-
-            for (int i = 0; i < files.length; i++) {
-
-                PdfReader reader = null;
-                PDFparametro parametro = new PDFparametro();
-                try {
-                    reader = new PdfReader(new FileInputStream(files[i]));
-                } catch (FileNotFoundException ex) {
-                    System.err.println("Sem doc");
-                } catch (IOException ex) {
-                    System.err.println("Falha I/O");
+            if(verifyQtd > 0){ 
+                
+                JFileChooser saveFile = new JFileChooser();
+                
+                saveFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                
+                int retorno = saveFile.showSaveDialog(jPanel1);
+                
+                if (retorno == 1) {
+                    JOptionPane.showMessageDialog(null, "Por favor escolha um destino válido!");
+                    
                 }
-
-                String[] textoPagina = null;
-
-                try {
-                    textoPagina = PdfTextExtractor.getTextFromPage(reader, 1).split("\n");
-                } catch (IOException ex) {
-                    System.err.println("Erro I/O");
-                }
-
-                for (String textoPagina1 : textoPagina) {
-                    String PDF = textoPagina1;
-
-                    if (PDF.contains("Número")) {
-                        String serial = textoPagina1;
-
-                        if (serial.contains("/")) {
-                            Serial = serial.replaceAll("(\\d+-\\d+-\\d+|\\d+\\/\\d+\\/\\d+)", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                            parametro.setSerial(Serial);
-                            // System.out.println(Serial);
-
-                        } else {
-
-                            Serial = serial.replaceAll("[0-9][0-9][.][0-9][0-9][.][0-9][0-9]", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                            // System.out.println(Serial);
-                            parametro.setSerial(Serial);
+                
+                if (retorno == JFileChooser.APPROVE_OPTION) {
+                    
+                    File diretorio = saveFile.getSelectedFile();
+                    
+                    System.out.println(diretorio);
+                    
+                    
+                    
+                    for (int i = 0; i < files.length; i++) {
+                        
+                        PdfReader reader = null;
+                        PDFparametro parametro = new PDFparametro();
+                        try {
+                            reader = new PdfReader(new FileInputStream(files[i]));
+                        } catch (FileNotFoundException ex) {
+                            System.err.println("Sem doc");
+                        } catch (IOException ex) {
+                            System.err.println("Falha I/O");
                         }
 
+                        String[] textoPagina = null;
+                        
+                        try {
+                            textoPagina = PdfTextExtractor.getTextFromPage(reader, 1).split("\n");
+                        } catch (IOException ex) {
+                            System.err.println("Erro I/O");
+                        }
+                        
+                        for (String textoPagina1 : textoPagina) {
+                            String PDF = textoPagina1;
+                            
+                            if (PDF.contains("Número")) {
+                                String serial = textoPagina1;
+                                
+                                if (serial.contains("/")) {
+                                    Serial = serial.replaceAll("(\\d+-\\d+-\\d+|\\d+\\/\\d+\\/\\d+)", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
+                                    parametro.setSerial(Serial);
+                                    // System.out.println(Serial);
+                                    
+                                } else {
+                                    
+                                    Serial = serial.replaceAll("[0-9][0-9][.][0-9][0-9][.][0-9][0-9]", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
+                                    // System.out.println(Serial);
+                                    parametro.setSerial(Serial);
+                                }
+                                
+                            }
+                            
+                            if (PDF.contains("CIX1")) {
+                                String ia = textoPagina1;
+                                IA = ia.replaceAll("CIX?[0-9] V\\/kA - ", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
+                                // System.out.println(IA);
+                                parametro.setIA(IA);
+                            }
+                            
+                            if (PDF.contains("CIX2")) {
+                                String ib = textoPagina1;
+                                IB = ib.replaceAll("CIX?[0-9] V\\/kA - ", "");
+                                // System.out.println(IB);
+                                parametro.setIB(IB);
+                            }
+                            
+                            if (PDF.contains("CIX3")) {
+                                String ic = textoPagina1;
+                                IC = ic.replaceAll("CIX?[0-9] V\\/kA - ", "");
+                                // System.out.println(IC);
+                                parametro.setIC(IC);
+                            }
+                            
+                            if (PDF.contains("CIXN")) {
+                                String in = textoPagina1;
+                                IN = in.replaceAll("CIX?[N] V\\/kA - ", "");
+                                //System.out.println(IN);
+                                parametro.setIN(IN);
+                            }
+                            
+                            if (PDF.contains("CUX1")) {
+                                String va = textoPagina1;
+                                VA = va.replaceAll("\\sCUX?[0-9] V\\/kV -", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
+                                // System.out.println(VA);
+                                parametro.setVA(VA);
+                            }
+                            
+                            if (PDF.contains("CUX2")) {
+                                String vb = textoPagina1;
+                                VB = vb.replaceAll("CUX?[0-9] V\\/kV - ", "");
+                                //  System.out.println(VB);
+                                parametro.setVB(VB);
+                            }
+                            
+                            if (PDF.contains("CUX3")) {
+                                String vc = textoPagina1;
+                                VC = vc.replaceAll("CUX?[0-9] V\\/kV - ", "");
+                                // System.out.println(VC);
+                                parametro.setVC(VC);
+                                
+                            }
+                            
+                            if (PDF.contains("CUX4")) {
+                                String vr = textoPagina1;
+                                VR = vr.replaceAll("CUX?[0-9] V\\/kV - ", "");
+                                //System.out.println(VR);
+                                parametro.setVR(VR);
+                            }
+                            
+                            if (PDF.contains("CUX5")) {
+                                String vs = textoPagina1;
+                                VS = vs.replaceAll("CUX?[0-9] V\\/kV - ", "");
+                                // System.out.println(VS);
+                                parametro.setVS(VS);
+                                
+                            }
+                            
+                            if (PDF.contains("CUX6")) {
+                                String vt = textoPagina1;
+                                VT = vt.replaceAll("CUX?[0-9] V\\/kV - ", "");
+                                parametro.setVT(VT);
+                                // System.out.println(VT);
+                                
+                            }
+                            
+                        }
+                        
+                        parametroTavrida = "[GENERAL]\n"
+                                + "MODEL=TAVRIDA OSM25\n"
+                                + "SERIAL=" + parametro.getSerial() + "\n"
+                                + "[CURRENT]\n"
+                                + "PRI=2\n"
+                                + "SEC=1\n"
+                                + "PRIU=5\n"
+                                + "SECU=3\n"
+                                + "IA=" + parametro.getIA() + "\n"
+                                + "IB=" + parametro.getIB() + "\n"
+                                + "IC=" + parametro.getIC() + "\n"
+                                + "IN=" + parametro.getIN() + "\n"
+                                + "A=CIX1\n"
+                                + "B=CIX2\n"
+                                + "C=CIX3\n"
+                                + "N=CIXN\n"
+                                + "[VOLTAGE]\n"
+                                + "PRI=0,12\n"
+                                + "SEC=1\n"
+                                + "PRIU=5\n"
+                                + "SECU=6\n"
+                                + "VA=" + parametro.getVA() + "\n"
+                                + "VB=" + parametro.getVB() + "\n"
+                                + "VC=" + parametro.getVC() + "\n"
+                                + "VR=" + parametro.getVR() + "\n"
+                                + "VS=" + parametro.getVS() + "\n"
+                                + "VT=" + parametro.getVT() + "\n"
+                                + "A=CUX1\n"
+                                + "B=CUX2\n"
+                                + "C=CUX3\n"
+                                + "R=CUX4\n"
+                                + "S=CUX5\n"
+                                + "T=CUX6\n";
+                        
+                        // System.out.println(parametroTavrida);
+                        File arqTxt = new File(diretorio + "\\" + parametro.getSerial() + ".txt");
+                        
+                        if (!arqTxt.exists()) {
+                            try {
+                                arqTxt.createNewFile();
+                                qtdPDFconvertidos++;
+                            } catch (IOException ex) {
+                                System.err.println("Erroooo");;
+                            }
+                        }
+                        // Prepara para escrever no arquivo
+                        FileWriter fw = null;
+                        try {
+                            fw = new FileWriter(arqTxt.getAbsoluteFile());
+                        } catch (IOException ex) {
+                            System.out.println("Errrrrrrrrrrro");;
+                        }
+                        BufferedWriter bw = new BufferedWriter(fw);
+                        
+                        try {
+                            // Escreve e fecha arquivo
+                            bw.write(parametroTavrida);
+                        } catch (IOException ex) {
+                            System.err.println("Errrrrooo Io");
+                        }
+                        try {
+                            bw.close();
+                            
+                        } catch (IOException ex) {
+                            System.err.println("Errrrrooooooo");
+                        }
                     }
-
-                    if (PDF.contains("CIX1")) {
-                        String ia = textoPagina1;
-                        IA = ia.replaceAll("CIX?[0-9] V\\/kA - ", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                        // System.out.println(IA);
-                        parametro.setIA(IA);
-                    }
-
-                    if (PDF.contains("CIX2")) {
-                        String ib = textoPagina1;
-                        IB = ib.replaceAll("CIX?[0-9] V\\/kA - ", "");
-                        // System.out.println(IB);
-                        parametro.setIB(IB);
-                    }
-
-                    if (PDF.contains("CIX3")) {
-                        String ic = textoPagina1;
-                        IC = ic.replaceAll("CIX?[0-9] V\\/kA - ", "");
-                        // System.out.println(IC);
-                        parametro.setIC(IC);
-                    }
-
-                    if (PDF.contains("CIXN")) {
-                        String in = textoPagina1;
-                        IN = in.replaceAll("CIX?[N] V\\/kA - ", "");
-                        //System.out.println(IN);
-                        parametro.setIN(IN);
-                    }
-
-                    if (PDF.contains("CUX1")) {
-                        String va = textoPagina1;
-                        VA = va.replaceAll("\\sCUX?[0-9] V\\/kV -", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                        // System.out.println(VA);
-                        parametro.setVA(VA);
-                    }
-
-                    if (PDF.contains("CUX2")) {
-                        String vb = textoPagina1;
-                        VB = vb.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        //  System.out.println(VB);
-                        parametro.setVB(VB);
-                    }
-
-                    if (PDF.contains("CUX3")) {
-                        String vc = textoPagina1;
-                        VC = vc.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        // System.out.println(VC);
-                        parametro.setVC(VC);
-
-                    }
-
-                    if (PDF.contains("CUX4")) {
-                        String vr = textoPagina1;
-                        VR = vr.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        //System.out.println(VR);
-                        parametro.setVR(VR);
-                    }
-
-                    if (PDF.contains("CUX5")) {
-                        String vs = textoPagina1;
-                        VS = vs.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        // System.out.println(VS);
-                        parametro.setVS(VS);
-
-                    }
-
-                    if (PDF.contains("CUX6")) {
-                        String vt = textoPagina1;
-                        VT = vt.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        parametro.setVT(VT);
-                        // System.out.println(VT);
-
-                    }
-
+                    
+                    
+                    jLabelQtdConvertidos.setText(String.valueOf(qtdPDFconvertidos));
+                    JOptionPane.showMessageDialog(null, "Parâmetros criados com sucesso!");
+                    
                 }
-
-                parametroTavrida = "[GENERAL]\n"
-                        + "MODEL=TAVRIDA OSM25\n"
-                        + "SERIAL=" + parametro.getSerial() + "\n"
-                        + "[CURRENT]\n"
-                        + "PRI=2\n"
-                        + "SEC=1\n"
-                        + "PRIU=5\n"
-                        + "SECU=3\n"
-                        + "IA=" + parametro.getIA() + "\n"
-                        + "IB=" + parametro.getIB() + "\n"
-                        + "IC=" + parametro.getIC() + "\n"
-                        + "IN=" + parametro.getIN() + "\n"
-                        + "A=CIX1\n"
-                        + "B=CIX2\n"
-                        + "C=CIX3\n"
-                        + "N=CIXN\n"
-                        + "[VOLTAGE]\n"
-                        + "PRI=0,12\n"
-                        + "SEC=1\n"
-                        + "PRIU=5\n"
-                        + "SECU=6\n"
-                        + "VA=" + parametro.getVA() + "\n"
-                        + "VB=" + parametro.getVB() + "\n"
-                        + "VC=" + parametro.getVC() + "\n"
-                        + "VR=" + parametro.getVR() + "\n"
-                        + "VS=" + parametro.getVS() + "\n"
-                        + "VT=" + parametro.getVT() + "\n"
-                        + "A=CUX1\n"
-                        + "B=CUX2\n"
-                        + "C=CUX3\n"
-                        + "R=CUX4\n"
-                        + "S=CUX5\n"
-                        + "T=CUX6\n";
-
-                // System.out.println(parametroTavrida);
-                File arqTxt = new File(diretorio + "\\" + parametro.getSerial() + ".txt");
-
-                if (!arqTxt.exists()) {
-                    try {
-                        arqTxt.createNewFile();
-                        qtdPDFconvertidos++;
-                    } catch (IOException ex) {
-                        System.err.println("Erroooo");;
-                    }
-                }
-                // Prepara para escrever no arquivo
-                FileWriter fw = null;
-                try {
-                    fw = new FileWriter(arqTxt.getAbsoluteFile());
-                } catch (IOException ex) {
-                    System.out.println("Errrrrrrrrrrro");;
-                }
-                BufferedWriter bw = new BufferedWriter(fw);
-
-                try {
-                    // Escreve e fecha arquivo
-                    bw.write(parametroTavrida);
-                } catch (IOException ex) {
-                    System.err.println("Errrrrooo Io");
-                }
-                try {
-                    bw.close();
-
-                } catch (IOException ex) {
-                    System.err.println("Errrrrooooooo");
-                }
-            }
-            
-
-            jLabelQtdConvertidos.setText(String.valueOf(qtdPDFconvertidos));
-            JOptionPane.showMessageDialog(null, "Parâmetros criados com sucesso!");
-
-        }
-
-
+                
+            }  else{ 
+                
+                JOptionPane.showMessageDialog(null, "Por favor, escolha um ou mais arquivos PDF!");
+            } 
+        
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         pdfTable.removeRow();
         jLQtdPDFlidos.setText("0");
         jLabelQtdConvertidos.setText("0");
+        verifyQtd = 0;
+        
     }//GEN-LAST:event_btnClearActionPerformed
 
     /**
