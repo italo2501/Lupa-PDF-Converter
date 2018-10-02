@@ -35,8 +35,9 @@ public class JframePDFReader extends javax.swing.JFrame {
 
     String parametroTavrida = "";
     PDFTableModel pdfTable = new PDFTableModel();
-    
+
     String verify;
+    int qtdPDFconvertidos = 0;
     String Serial = null;
     String S;
     String IA = null;
@@ -53,29 +54,13 @@ public class JframePDFReader extends javax.swing.JFrame {
     String[] paramentrosReligador;
     List<String> dadoss = new ArrayList<>();
 
-    public void run() {
-
-        for (int i = 0; i < 101; i++) {
-            try {
-
-             
-                 sleep(10);
-                PDFBar.setValue(i);
-
-            } catch (InterruptedException e) {
-
-            }
-          
-
-        }
-
-    }
+ 
 
     public JframePDFReader() {
         initComponents();
-         tablePDF.setModel(pdfTable);
-      this.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/images/icons8-add-file-64.png")).getImage()));
-      PDFBar.setBackground(Color.red);
+        tablePDF.setModel(pdfTable);
+        this.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/images/icons8-add-file-64.png")).getImage()));
+        PDFBar.setBackground(Color.red);
 
     }
 
@@ -95,6 +80,13 @@ public class JframePDFReader extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
         PDFBar = new javax.swing.JProgressBar();
         btnClear = new javax.swing.JButton();
+        jLabelPDFLidos = new javax.swing.JLabel();
+        jLQtdPDFlidos = new javax.swing.JLabel();
+        jLabelPDFConvertidos = new javax.swing.JLabel();
+        jLabelQtdConvertidos = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lupa Tavrida Converter");
@@ -132,8 +124,11 @@ public class JframePDFReader extends javax.swing.JFrame {
             }
         });
         tablePDF.setGridColor(new java.awt.Color(255, 255, 255));
+        tablePDF.setName(""); // NOI18N
+        tablePDF.setRowMargin(3);
         tablePDF.setSelectionBackground(new java.awt.Color(153, 153, 153));
         tablePDF.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tablePDF.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tablePDF);
 
         btnSave.setBackground(new java.awt.Color(255, 255, 255));
@@ -146,6 +141,9 @@ public class JframePDFReader extends javax.swing.JFrame {
 
         PDFBar.setBackground(new java.awt.Color(0, 153, 255));
         PDFBar.setForeground(new java.awt.Color(0, 153, 255));
+        PDFBar.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        PDFBar.setFocusCycleRoot(true);
+        PDFBar.setStringPainted(true);
         PDFBar.setVerifyInputWhenFocusTarget(false);
 
         btnClear.setBackground(new java.awt.Color(255, 255, 255));
@@ -156,20 +154,62 @@ public class JframePDFReader extends javax.swing.JFrame {
             }
         });
 
+        jLabelPDFLidos.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelPDFLidos.setText("Arquivos PDF lidos:");
+
+        jLQtdPDFlidos.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLQtdPDFlidos.setText("0");
+
+        jLabelPDFConvertidos.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelPDFConvertidos.setText("Arquivos PDF convertidos:");
+
+        jLabelQtdConvertidos.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabelQtdConvertidos.setText("0");
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel1.setText("Selecionar");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel2.setText("Salvar");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel3.setText("Limpar");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(PDFBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnPDF)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSave)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnClear)
-                .addContainerGap(515, Short.MAX_VALUE))
-            .addComponent(PDFBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPDF)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel1)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnClear))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel2)
+                        .addGap(54, 54, 54)
+                        .addComponent(jLabel3)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabelPDFLidos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLQtdPDFlidos))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabelPDFConvertidos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelQtdConvertidos)))
+                .addContainerGap(326, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,9 +218,23 @@ public class JframePDFReader extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPDF)
                     .addComponent(btnSave)
-                    .addComponent(btnClear))
+                    .addComponent(btnClear)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelPDFLidos)
+                            .addComponent(jLQtdPDFlidos))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelPDFConvertidos)
+                            .addComponent(jLabelQtdConvertidos))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PDFBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -211,20 +265,26 @@ public class JframePDFReader extends javax.swing.JFrame {
         arqPDF.setFileFilter(filter);
         int retorno = arqPDF.showOpenDialog(this);
 
-        
-        
-          if (retorno == 1) {
-               JOptionPane.showMessageDialog(null, "Por favor, escolha um ou mais arquivos PDF");
-            
+        if (retorno == 1) {
+            JOptionPane.showMessageDialog(null, "Por favor, escolha um ou mais arquivos PDF");
+
         }
-         
+
         if (retorno == JFileChooser.APPROVE_OPTION) {
 
             files = arqPDF.getSelectedFiles();
-             for (int i = 0; i < files.length; i++) {
-
+            for (int i = 0; i < files.length; i++) {
+                 
+               int t = files.length;
+               int p = 100* (i+1)/t;
+                PDFBar.setValue(p);
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JframePDFReader.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 PdfReader reader = null;
-                 PDFparametro parametro = new PDFparametro(); 
+                PDFparametro parametro = new PDFparametro();
                 try {
                     reader = new PdfReader(new FileInputStream(files[i]));
                 } catch (FileNotFoundException ex) {
@@ -242,21 +302,18 @@ public class JframePDFReader extends javax.swing.JFrame {
                 }
 
                 for (String textoPagina1 : textoPagina) {
-                    //System.out.println(textoPagina1);
                     String PDF = textoPagina1;
-                   
+
                     if (PDF.contains("Número")) {
                         String serial = textoPagina1;
 
                         if (serial.contains("/")) {
                             Serial = serial.replaceAll("(\\d+-\\d+-\\d+|\\d+\\/\\d+\\/\\d+)", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
                             parametro.setSerial(Serial);
-                            // System.out.println(Serial);
 
                         } else {
 
                             Serial = serial.replaceAll("[0-9][0-9][.][0-9][0-9][.][0-9][0-9]", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                            // System.out.println(Serial);
                             parametro.setSerial(Serial);
                         }
 
@@ -265,49 +322,42 @@ public class JframePDFReader extends javax.swing.JFrame {
                     if (PDF.contains("CIX1")) {
                         String ia = textoPagina1;
                         IA = ia.replaceAll("CIX?[0-9] V\\/kA - ", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                        // System.out.println(IA);
                         parametro.setIA(IA);
                     }
 
                     if (PDF.contains("CIX2")) {
                         String ib = textoPagina1;
                         IB = ib.replaceAll("CIX?[0-9] V\\/kA - ", "");
-                        // System.out.println(IB);
                         parametro.setIB(IB);
                     }
 
                     if (PDF.contains("CIX3")) {
                         String ic = textoPagina1;
                         IC = ic.replaceAll("CIX?[0-9] V\\/kA - ", "");
-                        // System.out.println(IC);
                         parametro.setIC(IC);
                     }
 
                     if (PDF.contains("CIXN")) {
                         String in = textoPagina1;
                         IN = in.replaceAll("CIX?[N] V\\/kA - ", "");
-                        //System.out.println(IN);
                         parametro.setIN(IN);
                     }
 
                     if (PDF.contains("CUX1")) {
                         String va = textoPagina1;
                         VA = va.replaceAll("\\sCUX?[0-9] V\\/kV -", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                        // System.out.println(VA);
                         parametro.setVA(VA);
                     }
 
                     if (PDF.contains("CUX2")) {
                         String vb = textoPagina1;
                         VB = vb.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        //  System.out.println(VB);
                         parametro.setVB(VB);
                     }
 
                     if (PDF.contains("CUX3")) {
                         String vc = textoPagina1;
                         VC = vc.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        // System.out.println(VC);
                         parametro.setVC(VC);
 
                     }
@@ -315,14 +365,12 @@ public class JframePDFReader extends javax.swing.JFrame {
                     if (PDF.contains("CUX4")) {
                         String vr = textoPagina1;
                         VR = vr.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        //System.out.println(VR);
                         parametro.setVR(VR);
                     }
 
                     if (PDF.contains("CUX5")) {
                         String vs = textoPagina1;
                         VS = vs.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                        // System.out.println(VS);
                         parametro.setVS(VS);
 
                     }
@@ -331,16 +379,16 @@ public class JframePDFReader extends javax.swing.JFrame {
                         String vt = textoPagina1;
                         VT = vt.replaceAll("CUX?[0-9] V\\/kV - ", "");
                         parametro.setVT(VT);
-                        // System.out.println(VT);
-
                     }
 
                 }
+
+                
                 pdfTable.addRow(parametro);
-               
-             }
-            
-            
+                 
+                jLQtdPDFlidos.setText(String.valueOf(files.length));
+            }
+
             JOptionPane.showMessageDialog(null, "Seleção efetuada com sucesso!");
 
         }
@@ -355,12 +403,12 @@ public class JframePDFReader extends javax.swing.JFrame {
         saveFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         int retorno = saveFile.showSaveDialog(jPanel1);
-        
-         if (retorno == 1) {
-               JOptionPane.showMessageDialog(null, "Por favor escolha um destino válido!");
-            
+
+        if (retorno == 1) {
+            JOptionPane.showMessageDialog(null, "Por favor escolha um destino válido!");
+
         }
-         
+
         if (retorno == JFileChooser.APPROVE_OPTION) {
 
             File diretorio = saveFile.getSelectedFile();
@@ -370,7 +418,7 @@ public class JframePDFReader extends javax.swing.JFrame {
             for (int i = 0; i < files.length; i++) {
 
                 PdfReader reader = null;
-                 PDFparametro parametro = new PDFparametro(); 
+                PDFparametro parametro = new PDFparametro();
                 try {
                     reader = new PdfReader(new FileInputStream(files[i]));
                 } catch (FileNotFoundException ex) {
@@ -388,9 +436,8 @@ public class JframePDFReader extends javax.swing.JFrame {
                 }
 
                 for (String textoPagina1 : textoPagina) {
-                    //System.out.println(textoPagina1);
                     String PDF = textoPagina1;
-                   
+
                     if (PDF.contains("Número")) {
                         String serial = textoPagina1;
 
@@ -516,12 +563,6 @@ public class JframePDFReader extends javax.swing.JFrame {
                         + "R=CUX4\n"
                         + "S=CUX5\n"
                         + "T=CUX6\n";
-                
-                    
-                     
-                   
-                     
-                     
 
                 // System.out.println(parametroTavrida);
                 File arqTxt = new File(diretorio + "\\" + parametro.getSerial() + ".txt");
@@ -529,6 +570,7 @@ public class JframePDFReader extends javax.swing.JFrame {
                 if (!arqTxt.exists()) {
                     try {
                         arqTxt.createNewFile();
+                        qtdPDFconvertidos++;
                     } catch (IOException ex) {
                         System.err.println("Erroooo");;
                     }
@@ -555,10 +597,9 @@ public class JframePDFReader extends javax.swing.JFrame {
                     System.err.println("Errrrrooooooo");
                 }
             }
-                    new Thread();
-                    run();
-           
-         
+            
+
+            jLabelQtdConvertidos.setText(String.valueOf(qtdPDFconvertidos));
             JOptionPane.showMessageDialog(null, "Parâmetros criados com sucesso!");
 
         }
@@ -567,7 +608,9 @@ public class JframePDFReader extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-          pdfTable.removeRow();
+        pdfTable.removeRow();
+        jLQtdPDFlidos.setText("0");
+        jLabelQtdConvertidos.setText("0");
     }//GEN-LAST:event_btnClearActionPerformed
 
     /**
@@ -610,6 +653,13 @@ public class JframePDFReader extends javax.swing.JFrame {
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnPDF;
     private javax.swing.JButton btnSave;
+    private javax.swing.JLabel jLQtdPDFlidos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelPDFConvertidos;
+    private javax.swing.JLabel jLabelPDFLidos;
+    private javax.swing.JLabel jLabelQtdConvertidos;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablePDF;
