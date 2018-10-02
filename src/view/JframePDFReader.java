@@ -144,6 +144,7 @@ public class JframePDFReader extends javax.swing.JFrame {
         });
 
         PDFBar.setBackground(new java.awt.Color(153, 153, 153));
+        PDFBar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         PDFBar.setForeground(new java.awt.Color(153, 153, 153));
         PDFBar.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         PDFBar.setFocusCycleRoot(true);
@@ -188,7 +189,6 @@ public class JframePDFReader extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PDFBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,6 +224,9 @@ public class JframePDFReader extends javax.swing.JFrame {
                         .addGap(133, 133, 133))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(PDFBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
@@ -255,7 +258,7 @@ public class JframePDFReader extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabelVersão)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PDFBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
