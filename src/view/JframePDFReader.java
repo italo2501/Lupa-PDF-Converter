@@ -476,12 +476,10 @@ public class JframePDFReader extends javax.swing.JFrame {
                                 if (serial.contains("/")) {
                                     Serial = serial.replaceAll("(\\d+-\\d+-\\d+|\\d+\\/\\d+\\/\\d+)", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
                                     parametro.setSerial(Serial);
-                                    // System.out.println(Serial);
                                     
                                 } else {
                                     
                                     Serial = serial.replaceAll("[0-9][0-9][.][0-9][0-9][.][0-9][0-9]", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                                    // System.out.println(Serial);
                                     parametro.setSerial(Serial);
                                 }
                                 
@@ -490,49 +488,42 @@ public class JframePDFReader extends javax.swing.JFrame {
                             if (PDF.contains("CIX1")) {
                                 String ia = textoPagina1;
                                 IA = ia.replaceAll("CIX?[0-9] V\\/kA - ", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                                // System.out.println(IA);
                                 parametro.setIA(IA);
                             }
                             
                             if (PDF.contains("CIX2")) {
                                 String ib = textoPagina1;
-                                IB = ib.replaceAll("CIX?[0-9] V\\/kA - ", "");
-                                // System.out.println(IB);
+                                IB = ib.replaceAll("CIX?[0-9] V\\/kA - ", "");                             
                                 parametro.setIB(IB);
                             }
                             
                             if (PDF.contains("CIX3")) {
                                 String ic = textoPagina1;
                                 IC = ic.replaceAll("CIX?[0-9] V\\/kA - ", "");
-                                // System.out.println(IC);
                                 parametro.setIC(IC);
                             }
                             
                             if (PDF.contains("CIXN")) {
                                 String in = textoPagina1;
                                 IN = in.replaceAll("CIX?[N] V\\/kA - ", "");
-                                //System.out.println(IN);
                                 parametro.setIN(IN);
                             }
                             
                             if (PDF.contains("CUX1")) {
                                 String va = textoPagina1;
                                 VA = va.replaceAll("\\sCUX?[0-9] V\\/kV -", "").replaceAll("[\\sA-Za-zÀ-ú]*", "");
-                                // System.out.println(VA);
                                 parametro.setVA(VA);
                             }
                             
                             if (PDF.contains("CUX2")) {
                                 String vb = textoPagina1;
                                 VB = vb.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                                //  System.out.println(VB);
                                 parametro.setVB(VB);
                             }
                             
                             if (PDF.contains("CUX3")) {
                                 String vc = textoPagina1;
                                 VC = vc.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                                // System.out.println(VC);
                                 parametro.setVC(VC);
                                 
                             }
@@ -540,14 +531,12 @@ public class JframePDFReader extends javax.swing.JFrame {
                             if (PDF.contains("CUX4")) {
                                 String vr = textoPagina1;
                                 VR = vr.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                                //System.out.println(VR);
                                 parametro.setVR(VR);
                             }
                             
                             if (PDF.contains("CUX5")) {
                                 String vs = textoPagina1;
                                 VS = vs.replaceAll("CUX?[0-9] V\\/kV - ", "");
-                                // System.out.println(VS);
                                 parametro.setVS(VS);
                                 
                             }
@@ -556,7 +545,6 @@ public class JframePDFReader extends javax.swing.JFrame {
                                 String vt = textoPagina1;
                                 VT = vt.replaceAll("CUX?[0-9] V\\/kV - ", "");
                                 parametro.setVT(VT);
-                                // System.out.println(VT);
                                 
                             }
                             
@@ -596,7 +584,7 @@ public class JframePDFReader extends javax.swing.JFrame {
                                 + "S=CUX5\n"
                                 + "T=CUX6\n";
                         
-                        // System.out.println(parametroTavrida);
+     
                         File arqTxt = new File(diretorio + "\\" + parametro.getSerial() + ".txt");
                         
                         if (!arqTxt.exists()) {
